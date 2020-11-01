@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<!-- dispalying items in cart of in before checkout -->
+<div class="infocontainer mt-4">
+    <h5>The items avaliable in your cart are listed below.
+        Please Review your items properly before checkout!
+    </h5>
+    <ul class="itemdisplay mt-3" style="position: relative;">
+        <li class="d-flex">
+            <h6>Product name</h6> <span class="badge badge-info px-3">Info</span>
+        </li>
+    </ul>
+</div>
+
+
+
+<!-- Form html  -->
+<form action="" class="my-3" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+
+    <div id="order">
+    </div>
+</form>
+{% endblock content %}
+
+
+{% block js %}
+<script>
+    console.log('welcome')
+    let cartitem = JSON.parse(localStorage.getItem('cart'))
+    let str = ''
+    for (item in cartitem) {
+        str += `<li class="d-flex"><h6>${cart[item][0]}</h6> <span class="badge badge-info" style="position: absolute;
+            right: 25rem;">${cart[item][1]}</span></li>`
+    }
+    document.querySelector('.itemdisplay').innerHTML = str
+
+    document.getElementById('json').value = JSON.stringify(cartitem)
+    if(Object.keys(cartitem).length>0){
+        document.getElementById('order').innerHTML = `<button type="submit" class="btn btn-outline-info" onclick="clearcart()">Order Now</button>`
+    }
+</script>
+
+{% endblock js %}
